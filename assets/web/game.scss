@@ -1,0 +1,83 @@
+/** Fonts **/
+@font-face {
+  font-family: '5pixwriter';
+  src: url('../fonts/5pixwriter.ttf');
+}
+
+/** Reset & core **/
+*, *:after, *:before {
+  box-sizing: border-box;
+  // Disable text selection
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  // Show default cursor to avoid it looking like text is seelctable
+  cursor: default;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+img {
+  border: 0;
+}
+.hide {
+  display: none;
+}
+
+/** Typography **/
+body {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: Pixelmix, monospace;
+  font-size: 6pt * 2;
+}
+h1, h2, h3, h4, h5, b, strong {
+  font-family: PixelmixBold, Pixelmix, monospace;
+  font-weight: normal;
+}
+h1 {
+  font-size: 6pt * 4;
+}
+h2 {
+  font-size: 6pt * 3;
+}
+h3 {
+  font-size: 6pt * 2;
+}
+
+/** Canvas **/
+canvas {
+  /** We want nearest neighbor stretching (pixelated) for all canvas elements **/
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+#game, #hud {
+  $width: 640px * 2;
+  $height: 400px * 2;
+
+  position: fixed;
+  width: $width;
+  height: $height;
+  top: 50%;
+  left: 50%;
+  margin-top: -($height / 2);
+  margin-left: -($width / 2);
+  z-index: 100;
+}
+#hud {
+  // #hud is an exact overlay of the game canvas
+  display: none;
+  z-index: 200;
+  padding: 15px;
+  text-align: left;
+}
