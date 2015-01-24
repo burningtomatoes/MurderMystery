@@ -12,7 +12,8 @@ var Entity = Class.extend({
     height: 0,
     width: 0,
 
-    sprite: null,
+    spriteBody: null,
+    spriteHead: null,
     spriteShadow: null,
     spriteHurt: null,
 
@@ -88,7 +89,6 @@ var Entity = Class.extend({
         ctx.save();
         ctx.translate(Camera.translateX(this.posX), Camera.translateY(this.posY));
 
-        // Beware: I just sort of bruteforced these translations until they looked right. So, yeah.
         switch (this.direction) {
             case Direction.UP:
                 break;
@@ -106,19 +106,23 @@ var Entity = Class.extend({
                 break;
         }
 
-        if (this.weapon != null) {
-            this.weapon.draw(this, ctx);
-        }
-
         if (this.spriteShadow != null) {
             ctx.drawImage(this.spriteShadow, 0, 0, this.width, this.height, 1, 1, this.width, this.height);
         }
 
-        if (this.sprite != null) {
-            if (this.sprite.isAnimation) {
-                this.sprite.draw(ctx, this.headBob, 0);
+        if (this.spriteBody != null) {
+            if (this.spriteBody.isAnimation) {
+                this.spriteBody.draw(ctx, this.headBob, 0);
             } else {
-                ctx.drawImage(this.sprite, 0, 0, this.width, this.height, this.headBob, 0, this.width, this.height);
+                ctx.drawImage(this.spriteBody, 0, 0, this.width, this.height, this.headBob, 0, this.width, this.height);
+            }
+        }
+
+        if (this.spriteHead != null) {
+            if (this.spriteHead.isAnimation) {
+                this.spriteHead.draw(ctx, this.headBob, 0);
+            } else {
+                ctx.drawImage(this.spriteHead, 0, 0, this.width, this.height, (this.spriteBody.width / 2) - (this.spriteHead.width / 2) - this.headBob, 0, this.width, this.height);
             }
         }
 
@@ -168,8 +172,12 @@ var Entity = Class.extend({
             this.headBob = 0;
         }
 
-        if (this.sprite.isAnimation) {
-            this.sprite.update();
+        if (this.spriteBody.isAnimation) {
+            this.spriteBody.update();
+        }
+
+        if (this.spriteHead.isAnimation) {
+            this.spriteHead.update();
         }
     },
 

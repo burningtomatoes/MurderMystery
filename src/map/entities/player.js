@@ -10,11 +10,12 @@ var Player = Entity.extend({
     init: function() {
         this._super();
 
-        this.width = 32;
-        this.height = 18;
+        this.width = 40;
+        this.height = 26;
 
-        this.sprite = Gfx.load('hero');
-        this.spriteShadow = Gfx.load('hero_shadow');
+        this.spriteHead = Gfx.load('head_detective');
+        this.spriteBody = Gfx.load('body_detective');
+        this.spriteShadow = Gfx.load('shadow_body_generic');
     },
 
     damage: function (changeValue) {
