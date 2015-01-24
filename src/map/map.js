@@ -195,18 +195,9 @@ var Map = Class.extend({
                 // noinspection FallThroughInSwitchStatementJS
                 switch (spawnId) {
                     default:
-                        console.warn('[Entity] Unknown spawn type, have a Goblin instead:', spawnId);
-                    case 'goblin':
-                        entity = new Goblin();
-                        break;
-                    case 'pot':
-                        entity = new Pot();
-                        break;
-                    case 'chest':
-                        entity = new Chest();
-                        break;
-                    case 'coin':
-                        entity = new Coin();
+                        console.warn('[Entity] Unknown spawn type, have an Officer instead:', spawnId);
+                    case 'officer':
+                        entity = new Officer();
                         break;
                 }
 
