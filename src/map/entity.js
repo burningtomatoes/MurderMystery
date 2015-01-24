@@ -114,7 +114,7 @@ var Entity = Class.extend({
             if (this.spriteBody.isAnimation) {
                 this.spriteBody.draw(ctx, this.headBob, 0);
             } else {
-                ctx.drawImage(this.spriteBody, 0, 0, this.width, this.height, this.headBob, 0, this.width, this.height);
+                ctx.drawImage(this.spriteBody, 0, 0, this.width, this.height, (this.headBob / 2), 0, this.width, this.height);
             }
         }
 
@@ -122,7 +122,7 @@ var Entity = Class.extend({
             if (this.spriteHead.isAnimation) {
                 this.spriteHead.draw(ctx, this.headBob, 0);
             } else {
-                ctx.drawImage(this.spriteHead, 0, 0, this.width, this.height, (this.spriteBody.width / 2) - (this.spriteHead.width / 2) - this.headBob, 0, this.width, this.height);
+                ctx.drawImage(this.spriteHead, 0, 0, this.width, this.height, (this.spriteBody.width / 2) - (this.spriteHead.width / 2) - (this.headBob / 2), 0, this.width, this.height);
             }
         }
 
