@@ -148,10 +148,8 @@ var Map = Class.extend({
         this.addPlayer(player);
     },
 
-    blockedTiles: [],
     blockedRects: [],
     teleRects: [],
-    npcBlockedTiles: [],
     npcBlockedRects: [],
 
     prepareMapSpawns: function() {
@@ -256,14 +254,10 @@ var Map = Class.extend({
                 rect.right = rect.left + rect.width;
 
                 if (isBlocking) {
-                    this.blockedTiles.push(x);
-                    this.blockedTiles.push(y);
                     this.blockedRects.push(rect);
                 }
 
                 if (isNpcBlocking) {
-                    this.npcBlockedTiles.push(x);
-                    this.npcBlockedTiles.push(y);
                     this.npcBlockedRects.push(rect);
                 }
 
@@ -273,21 +267,6 @@ var Map = Class.extend({
                 }
             }
         }
-    },
-
-    isCoordBlocked: function (x, y) {
-        // Every even index contains X coord, odd index contains Y coord
-        var blockedTilesLength = this.blockedTiles.length;
-        for (var i = 0; i < blockedTilesLength; i += 2) {
-            var x2 = this.blockedTiles[i];
-            var y2 = this.blockedTiles[i + 1];
-
-            if (x == x2 && y == y2) {
-                return true;
-            }
-        }
-
-        return false;
     },
 
     isRectBlocked: function(ourRect, isNpc, ignoreEntity) {
