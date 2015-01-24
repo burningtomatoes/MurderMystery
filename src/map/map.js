@@ -19,7 +19,8 @@ var Map = Class.extend({
         }
 
         if (callback == null) {
-            callback = function() { };
+            callback = function () {
+            };
         }
 
         this.id = id;
@@ -29,7 +30,7 @@ var Map = Class.extend({
 
         $.get('assets/maps/' + id + '.json')
 
-            .success(function(data) {
+            .success(function (data) {
                 this.data = data;
                 this.processData();
 
@@ -39,7 +40,7 @@ var Map = Class.extend({
                 callback(true);
             }.bind(this))
 
-            .error(function(obj, msg, e) {
+            .error(function (obj, msg, e) {
                 console.error('[Map] A network error occurred while loading the map data.', msg, e);
 
                 this.loading = false;
@@ -58,7 +59,10 @@ var Map = Class.extend({
     widthPx: 0,
     tilesPerRow: 0,
 
-    processData: function() {
+    tidTranslations: [],
+    tidAnimations: [],
+
+    processData: function () {
         // Load & prepare the tileset for rendering
         var tilesetSrc = this.data.tilesets[0].image;
         tilesetSrc = tilesetSrc.replace('../images/', '');
@@ -75,14 +79,14 @@ var Map = Class.extend({
 
         // Avoid "undefined" errors and a boat load of checks by creating boilerplate dummy objects where needed
         if (typeof(this.data.properties) == 'undefined') {
-            this.data.properties = { };
+            this.data.properties = {};
         }
 
         for (var i = 0; i < this.layers.length; i++) {
             var layer = this.layers[i];
 
             if (typeof(layer.properties) == 'undefined') {
-                layer.properties = { };
+                layer.properties = {};
             }
         }
 
@@ -107,6 +111,9 @@ var Map = Class.extend({
 
         // Spawns (NPCs) as defined in the map data
         this.prepareMapSpawns();
+
+        // Prepare tile animations
+        this.prepareTidAnimations();
     },
 
     configurePlayerSpawn: function (playerEntity) {
@@ -140,7 +147,7 @@ var Map = Class.extend({
         playerEntity.direction = orientation;
     },
 
-    redeploy: function() {
+    redeploy: function () {
         this.remove(this.player);
 
         var player = new Player();
@@ -152,7 +159,7 @@ var Map = Class.extend({
     teleRects: [],
     npcBlockedRects: [],
 
-    prepareMapSpawns: function() {
+    prepareMapSpawns: function () {
         var layerCount = this.layers.length;
 
         for (var i = 0; i < layerCount; i++) {
@@ -210,11 +217,10 @@ var Map = Class.extend({
     },
 
     prepareBlockMap: function () {
-        this.blockedTiles = [];
         this.blockedRects = [];
         this.teleRects = [];
         this.npcBlockedRects = [];
-        this.npcBlockedTiles = [];
+        this.tidTranslations = {};
 
         var layerCount = this.layers.length;
 
@@ -226,7 +232,7 @@ var Map = Class.extend({
             var y = 0;
 
             var isBlocking = layer.properties.blocked == '1';
-            var isNpcBlocking =  layer.properties.npc_block == '1';
+            var isNpcBlocking = layer.properties.npc_block == '1';
             var isTeleportingTo = layer.properties.teleport != null ? layer.properties.teleport : null;
 
             for (var tileIdx = 0; tileIdx < layerDataLength; tileIdx++) {
@@ -237,6 +243,12 @@ var Map = Class.extend({
                 if (x >= this.width) {
                     y++;
                     x = 0;
+                }
+
+                if (typeof this.tidTranslations[tid] == 'undefined') {
+                    // Build the tid translations table, we use this for drawing
+                    // Tile animations will mutate this table in update() where needed.
+                    this.tidTranslations[tid] = tid;
                 }
 
                 if (tid === 0) {
@@ -269,7 +281,7 @@ var Map = Class.extend({
         }
     },
 
-    isRectBlocked: function(ourRect, isNpc, ignoreEntity) {
+    isRectBlocked: function (ourRect, isNpc, ignoreEntity) {
         var blockedRectsLength = this.blockedRects.length;
 
         for (var i = 0; i < blockedRectsLength; i++) {
@@ -310,7 +322,7 @@ var Map = Class.extend({
         return false;
     },
 
-    getEntitiesInRect: function(ourRect, ignoreEntity) {
+    getEntitiesInRect: function (ourRect, ignoreEntity) {
         var entitiesMatched = [];
 
         var entitiesLength = this.entities.length;
@@ -331,7 +343,7 @@ var Map = Class.extend({
         return entitiesMatched;
     },
 
-    getTeleport: function(rect) {
+    getTeleport: function (rect) {
         var teleportsLength = this.teleRects.length;
 
         for (var i = 0; i < teleportsLength; i++) {
@@ -407,7 +419,8 @@ var Map = Class.extend({
             }
 
             for (var tileIdx = 0; tileIdx < layerDataLength; tileIdx++) {
-                var tid = layer.data[tileIdx];
+                var tidValue = layer.data[tileIdx];
+                var tid = this.tidTranslations[tidValue];
 
                 x++;
 
@@ -467,10 +480,71 @@ var Map = Class.extend({
             return;
         }
 
+        this.updateEntities();
+        this.updateTileAnimations();
+    },
+
+    updateEntities: function () {
         var entityCount = this.entities.length;
 
         for (var i = 0; i < entityCount; i++) {
             this.entities[i].update();
         }
-    }
+    },
+
+    updateTileAnimations: function () {
+        var configuredAnims = this.tidAnimations.length;
+        for (var i = 0; i < configuredAnims; i++) {
+            var animObj = this.tidAnimations[i];
+
+            if (animObj.delayTimer > 0) {
+                animObj.delayTimer--;
+            }
+
+            if (animObj.delayTimer == 0 && animObj.animateTimer > 0) {
+                animObj.animateTimer--;
+
+                if (animObj.animateTimer == 0) {
+                    animObj.index = (animObj.index == 1 ? 0 : 1);
+                    animObj.animateTimer = animObj.animSpeed;
+
+                    if (animObj.index == 0) {
+                        animObj.delayTimer = animObj.animDelay;
+                    }
+                }
+            }
+
+            this.tidTranslations[animObj.fromTid] = (animObj.index == 1 ? animObj.toTid : animObj.fromTid);
+        }
+    },
+
+    prepareTidAnimations: function () {
+        var tileProps = this.data.tilesets[0].tileproperties;
+
+        this.tidAnimations = [];
+
+        if (tileProps == null) {
+            return;
+        }
+
+        for (var tid in tileProps) {
+            var propsForTid = tileProps[tid];
+
+            if (propsForTid.animation != null) {
+                var animDataRaw = propsForTid.animation;
+                var animDataBits = animDataRaw.split(',');
+
+                var animObj = { };
+                animObj.fromTid = parseInt(tid) + 1;
+                animObj.toTid = parseInt(animDataBits[0]) + 1;
+                animObj.animSpeed = parseInt(animDataBits[1]);
+                animObj.animDelay = parseInt(animDataBits[2]);
+                animObj.index = 0;
+                animObj.delayTimer = animObj.animDelay;
+                animObj.animateTimer = animObj.animSpeed;
+
+                this.tidAnimations.push(animObj);
+            }
+        }
+    },
 });
