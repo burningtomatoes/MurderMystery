@@ -7,10 +7,6 @@ var Player = Entity.extend({
 
     isPlayer: true,
 
-    touchPainTimer: 0,
-
-    causesDamage: false,
-
     init: function() {
         this._super();
 
@@ -19,34 +15,6 @@ var Player = Entity.extend({
 
         this.sprite = Gfx.load('hero');
         this.spriteShadow = Gfx.load('hero_shadow');
-
-        this.healthCapacity = 12;
-        this.weapon = Inventory.currentWeapon;
-        this.healthValue = Inventory.health;
-        this.syncHealthUi();
-
-        this.generateHurtSprite();
-    },
-
-    syncHealthUi: function() {
-        var $health = $('#health');
-        var hearts = Math.ceil(this.healthCapacity / 4);
-        var capacityDrawn = 0;
-
-        $health.html('');
-
-        for (var i = 0; i < hearts; i++) {
-            var capacityLeft = this.healthValue - capacityDrawn;
-            var capacity = capacityLeft > 4 ? 4 : capacityLeft;
-            capacityDrawn += capacity;
-            capacityLeft = this.healthValue - capacityDrawn;
-
-            var $image = $('<img />')
-                .attr('src', 'assets/images/health_' + capacity + '.png')
-                .addClass(capacity > 0 ? 'filled' + capacity : 'empty')
-                .addClass(capacityLeft == 0 ? 'last' : 'notlast')
-                .appendTo($health);
-        }
     },
 
     damage: function (changeValue) {

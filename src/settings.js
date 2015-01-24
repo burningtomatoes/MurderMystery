@@ -1,3 +1,4 @@
 var Settings = {
-    tileSize: 32
+    tileSize: 32,
+    skipBootLogo: true
 };
