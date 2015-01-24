@@ -1,7 +1,10 @@
 var Officer = Entity.extend({
     isNpc: true,
 
-    init: function() {
+    slightlyMoveTimer: 0,
+    slightlyMoveOverride: 0,
+
+    init: function () {
         this._super();
 
         this.width = 40;
@@ -10,5 +13,22 @@ var Officer = Entity.extend({
         this.spriteHead = Gfx.load('head_officer');
         this.spriteBody = Gfx.load('body_officer');
         this.spriteShadow = Gfx.load('shadow_body_generic');
+
+        this.slightlyMoveTimer = 30;
+    },
+
+    update: function () {
+        this._super();
+
+        if (this.slightlyMoveTimer > 0) {
+            this.slightlyMoveTimer--;
+
+            if (this.slightlyMoveTimer == 0) {
+                this.slightlyMoveOverride = Math.round(Math.random() * 4 - 2);
+                this.slightlyMoveTimer = Math.round(Math.random() * 60) + 60;
+            }
+        }
+
+        this.headBob = this.slightlyMoveOverride;
     }
 });

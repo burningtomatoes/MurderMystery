@@ -114,7 +114,7 @@ var Entity = Class.extend({
             if (this.spriteBody.isAnimation) {
                 this.spriteBody.draw(ctx, this.headBob, 0);
             } else {
-                ctx.drawImage(this.spriteBody, 0, 0, this.width, this.height, (this.headBob / 2), 0, this.width, this.height);
+                ctx.drawImage(this.spriteBody, 0, 0, this.width, this.height, Math.round(this.headBob / 2), 0, this.width, this.height);
             }
         }
 
