@@ -79,6 +79,12 @@ canvas {
   z-index: 200;
   padding: 15px;
   text-align: left;
+
+  #fps {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
 }
 
 /** Boot logo **/
