@@ -14,6 +14,10 @@ var Guest = Entity.extend({
      */
     room: null,
 
+    isMurderer: false,
+    isVictim: false,
+    isWitness: false,
+
     init: function (firstName, lastName, gender, maritalStatus, head, body) {
         this._super();
 

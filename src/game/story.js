@@ -48,6 +48,13 @@ var Story = {
         this.victim = murderRoom.occupants[0];
         this.victim.isDead = true;
 
+        if (murderRoom.occupants.length > 0) {
+            for (var i = 1; i < murderRoom.occupants.length; i++) {
+                var witness = murderRoom.occupants[i];
+                witness.isWitness = true;
+            }
+        }
+
         murderRoom.occupants.push(this.murderer);
         this.murderer.room = murderRoom;
 
