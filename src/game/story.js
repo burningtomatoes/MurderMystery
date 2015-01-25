@@ -4,6 +4,7 @@ var Story = {
     guests: [],
 
     generateStory: function () {
+        // Step one: generate a random selection of guests.
         this.generateGuests();
 
         if (Settings.showStoryTool) {
@@ -36,12 +37,11 @@ var Story = {
             }
             while (namesUsed.indexOf(completeName) >= 0);
 
-            console.log(completeName);
-
             namesUsed.push(completeName);
 
             // Create an actual guest entity. This entity combines guest logic with an actual NPC on the map.
-            var guest = new Guest(firstName, lastName, gender, maritalStatus);
+            var guest = new Guest(firstName, lastName, gender, maritalStatus, 'officer', 'officer');
+            // TODO Random bodies & heads instead of officer...
             this.guests.push(guest);
         }
     },
@@ -52,14 +52,13 @@ var Story = {
         for (var i = 0; i < guestsLength; i++) {
             var guest = this.guests[i];
             map.add(guest);
+            guest.findFreePosition();
         }
     },
 
     fillStoryDebug: function () {
         var $ds = $('#dev-story');
         $ds.html('');
-
-        $ds.append('Guests: ' + this.guests.length + "<br />");
 
         for (var i = 0; i < this.guests.length; i++) {
             var guest = this.guests[i];

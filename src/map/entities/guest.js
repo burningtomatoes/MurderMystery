@@ -2,8 +2,7 @@ var Guest = Entity.extend({
     isNpc: true,
     isGuest: true,
 
-    slightlyMoveTimer: 0,
-    slightlyMoveOverride: 0,
+    restlessTimer: 0,
 
     firstName: 'John',
     lastName: 'Doe',
@@ -24,8 +23,25 @@ var Guest = Entity.extend({
         this.spriteHead = Gfx.load('head_' + head);
         this.spriteBody = Gfx.load('body_' + body);
         this.spriteShadow = Gfx.load('shadow_body_generic');
+    },
 
-        this.slightlyMoveTimer = 30;
+    canMoveAnywhere: function () {
+        return this.canMoveLeft() || this.canMoveDown() || this.canMoveUp() || this.canMoveRight();
+    },
+
+    findFreePosition: function () {
+        do {
+            this.posX = chance.integer({
+                min: Settings.tileSize,
+                max: this.map.widthPx - Settings.tileSize
+            });
+
+            this.posY = chance.integer({
+                min: Settings.tileSize,
+                max: this.map.heightPx - Settings.tileSize
+            });
+        }
+        while (!this.canMoveAnywhere());
     },
 
     getNamePrefix: function () {
@@ -50,16 +66,5 @@ var Guest = Entity.extend({
 
     update: function () {
         this._super();
-
-        if (this.slightlyMoveTimer > 0) {
-            this.slightlyMoveTimer--;
-
-            if (this.slightlyMoveTimer == 0) {
-                this.slightlyMoveOverride = Math.round(Math.random() * 4 - 2);
-                this.slightlyMoveTimer = Math.round(Math.random() * 60) + 60;
-            }
-        }
-
-        this.headBob = this.slightlyMoveOverride;
     }
 });
