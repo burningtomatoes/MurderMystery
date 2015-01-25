@@ -4,8 +4,28 @@ var Story = {
     guests: [],
 
     generateStory: function () {
+        // Step zero: Mop up the corpses and stuff from any previous games.
+        Rooms.cleanUp();
+
         // Step one: generate a random selection of guests.
         this.generateGuests();
+
+        // Step two: assign the guests to random rooms to be in at the time of the murder.
+        for (var i = 0; i < this.guests.length; i++) {
+            var guest = this.guests[i];
+            var room = null;
+
+            // Find a room with...room for us.
+            do
+            {
+                room = Rooms.selectRandomRoom();
+            }
+            while (!room.anyRoomLeft());
+
+            room.occupants.push(guest);
+            guest.room = room;
+        }
+
 
         if (Settings.showStoryTool) {
             this.fillStoryDebug();
@@ -63,7 +83,11 @@ var Story = {
         for (var i = 0; i < this.guests.length; i++) {
             var guest = this.guests[i];
 
-            $ds.append(guest.getDisplayName() + "<br />");
+            $ds.append(guest.getDisplayName());
+            $ds.append("<br />");
+            $ds.append(guest.room.name);
+            $ds.append("<br />");
+            $ds.append("<br />");
         }
 
         $ds.show();

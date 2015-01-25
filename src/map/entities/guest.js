@@ -9,6 +9,11 @@ var Guest = Entity.extend({
     gender: Gender.MALE,
     martialStatus: MaritalStatus.UNDISCLOSED,
 
+    /**
+     * The room we were in at the time of the murder.
+     */
+    room: null,
+
     init: function (firstName, lastName, gender, maritalStatus, head, body) {
         this._super();
 

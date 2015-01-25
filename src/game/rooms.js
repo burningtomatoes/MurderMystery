@@ -9,6 +9,13 @@ var Rooms = {
         return this.data[idx];
     },
 
+    cleanUp: function () {
+        for (var i = 0; i < this.data.length; i++) {
+            var room = this.data[i];
+            room.occupants = [];
+        }
+    },
+
     selectMurderRoom: function () {
         var room = null;
 
@@ -57,19 +64,29 @@ var Room = Class.extend({
      * The name (ID) of the map file associated with this room.
      */
     mapId: null,
+    /**
+     * Occupants of this room at the time of the murder.
+     */
+    occupants: [],
 
     init: function (data) {
         for (var property in data) {
             var value = data[property];
             this[property] = value;
         }
+
+        this.occupants = [];
+    },
+
+    anyRoomLeft: function () {
+        return this.occupants.length < this.maxOccupants;
     }
 });
 
 Rooms.push(new Room({
     name: 'Front Room',
     canMurder: false,
-    maxOccupants: 0,
+    maxOccupants: 1,
     mapId: 'main_room'
 }));
 
