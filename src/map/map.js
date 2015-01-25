@@ -363,6 +363,7 @@ var Map = Class.extend({
     player: null,
 
     add: function (e) {
+        e.map = this;
         this.entities.push(e);
     },
 

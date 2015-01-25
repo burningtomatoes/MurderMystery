@@ -37,6 +37,8 @@ var Entity = Class.extend({
 
     causesCollision: true,
 
+    map: null,
+
     init: function () {
         this.width = 32;
         this.height = 32;
