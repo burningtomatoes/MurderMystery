@@ -28,7 +28,7 @@ var Rooms = {
 
             room = this.data[idx];
         }
-        while (!room.canMurder);
+        while (!room.canMurder || room.occupants.length == 0);
 
         return room;
     },

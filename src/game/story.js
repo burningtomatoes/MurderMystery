@@ -2,6 +2,7 @@ var Story = {
     GUEST_COUNT: 6,
 
     guests: [],
+    murderer: null,
 
     generateStory: function () {
         // Step zero: Mop up the corpses and stuff from any previous games.
@@ -10,9 +11,22 @@ var Story = {
         // Step one: generate a random selection of guests.
         this.generateGuests();
 
-        // Step two: assign the guests to random rooms to be in at the time of the murder.
+        // Step two: determine who is the murderer.
+        this.murderer = this.guests[chance.integer({
+            min: 0,
+            max: this.guests.length - 1
+        })];
+        this.murderer.isMurderer = true;
+        this.murderer.isDead = false;
+
+        // Step three: assign the remaining guests to random rooms to be in at the time of the murder.
         for (var i = 0; i < this.guests.length; i++) {
             var guest = this.guests[i];
+
+            if (guest === this.murderer) {
+                continue;
+            }
+
             var room = null;
 
             // Find a room with...room for us.
@@ -24,7 +38,18 @@ var Story = {
 
             room.occupants.push(guest);
             guest.room = room;
+            guest.isMurderer = false;
+            guest.isDead = false;
         }
+
+        // Step four: assign the murder to a random room and victimize a guest
+        var murderRoom = Rooms.selectMurderRoom();
+
+        this.victim = murderRoom.occupants[0];
+        this.victim.isDead = true;
+
+        murderRoom.occupants.push(this.murderer);
+        this.murderer.room = murderRoom;
 
 
         if (Settings.showStoryTool) {
@@ -86,6 +111,18 @@ var Story = {
             $ds.append(guest.getDisplayName());
             $ds.append("<br />");
             $ds.append(guest.room.name);
+            $ds.append(', ');
+
+            if (guest.isMurderer) {
+                $ds.append('MURDERER');
+            } else if (guest.isDead) {
+                $ds.append('DEAD');
+            } else if (guest.isWitness) {
+                $ds.append('WITNESS');
+            } else {
+                $ds.append('INNOCENT');
+            }
+
             $ds.append("<br />");
             $ds.append("<br />");
         }
