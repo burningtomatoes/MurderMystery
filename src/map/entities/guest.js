@@ -40,6 +40,11 @@ var Guest = Entity.extend({
                 min: Settings.tileSize,
                 max: this.map.heightPx - Settings.tileSize
             });
+
+            this.direction = chance.integer({
+                min: Direction.UP,
+                max: Direction.LEFT
+            })
         }
         while (!this.canMoveAnywhere());
     },
