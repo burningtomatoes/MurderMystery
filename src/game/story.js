@@ -92,7 +92,7 @@ var Story = {
             namesUsed.push(completeName);
 
             // Create an actual guest entity. This entity combines guest logic with an actual NPC on the map.
-            var guest = new Guest(firstName, lastName, gender, maritalStatus, 'officer', 'officer');
+            var guest = new Guest(firstName, lastName, gender, maritalStatus, 'male_1', 'suit_black');
             // TODO Random bodies & heads instead of officer...
             this.guests.push(guest);
         }
