@@ -20,7 +20,7 @@ var Game = {
         Story.generateStory();
 
         // Load up the main hall / living room and spawn the guests in the living room.
-        this.loadMap('test_room', function (map) {
+        this.loadMap('main_room', function (map) {
             Story.spawnGuests(map);
         });
     },
