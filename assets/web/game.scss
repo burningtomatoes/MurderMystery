@@ -99,3 +99,14 @@ canvas {
   left: 0;
   right: 0;
 }
+
+/** Story tool **/
+#dev-story {
+  position: absolute;
+  left: 0px;
+  bottom: 0;
+  padding: 5px 10px;
+  color: #fff;
+  background: rgba(120, 120, 120, 0.5);
+  font-size: 18pt !important;
+}

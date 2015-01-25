@@ -8,6 +8,12 @@ Game design & development:
     http://www.burningtomato.com
     License: MIT
 
+### ETC ###
+
+Uses Chance.js library
+    Copyright (c) 2013 Victor Quinn
+    http://chancejs.com/
+
 ### GFX ###
 
 5pixwriter font:

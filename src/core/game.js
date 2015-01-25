@@ -11,10 +11,18 @@ var Game = {
     start: function () {
         Canvas.$canvas.hide();
 
+        // Clear out the persistent map cache so the entire game world is reset.
         this.maps = [];
         this.lastMapId = null;
 
-        this.loadMap('test_room');
+        // Generate the backstory for this game session randomly.
+        // This will generate the characters, where they were, what they did, what they know, etc.
+        Story.generateStory();
+
+        // Load up the main hall / living room and spawn the guests in the living room.
+        this.loadMap('test_room', function (map) {
+            Story.spawnGuests(map);
+        });
     },
 
     resetting: false,
@@ -49,8 +57,14 @@ var Game = {
         });
     },
 
-    loadMap: function (id) {
+    loadMap: function (id, loadCallback) {
+        if (loadCallback == null) {
+            loadCallback = function () { };
+        }
+
         var mapReady = function () {
+            loadCallback(this.map);
+
             Canvas.$canvas.delay(200).fadeIn(this.lastMapId == null ? 2000 : 'fast');
             this.lastMapId = id;
         }.bind(this);

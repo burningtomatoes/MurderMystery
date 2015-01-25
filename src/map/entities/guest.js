@@ -1,0 +1,65 @@
+var Guest = Entity.extend({
+    isNpc: true,
+    isGuest: true,
+
+    slightlyMoveTimer: 0,
+    slightlyMoveOverride: 0,
+
+    firstName: 'John',
+    lastName: 'Doe',
+    gender: Gender.MALE,
+    martialStatus: MaritalStatus.UNDISCLOSED,
+
+    init: function (firstName, lastName, gender, maritalStatus, head, body) {
+        this._super();
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.martialStatus = maritalStatus;
+
+        this.width = 40;
+        this.height = 26;
+
+        this.spriteHead = Gfx.load('head_' + head);
+        this.spriteBody = Gfx.load('body_' + body);
+        this.spriteShadow = Gfx.load('shadow_body_generic');
+
+        this.slightlyMoveTimer = 30;
+    },
+
+    getNamePrefix: function () {
+        if (this.gender == Gender.MALE) {
+            return 'Mr';
+        }
+
+        // Wow, okay, so there is a lot of discussions on these prefixes on the internet. Hope I used this right.
+        switch (this.martialStatus) {
+            case MaritalStatus.UNDISCLOSED:
+                return 'Ms';
+            case MaritalStatus.MARRIED:
+                return 'Mrs';
+            case MaritalStatus.UNMARRIED:
+                return 'Miss';
+        }
+    },
+
+    getDisplayName: function () {
+        return this.getNamePrefix() + ' ' + this.firstName + ' ' + this.lastName;
+    },
+
+    update: function () {
+        this._super();
+
+        if (this.slightlyMoveTimer > 0) {
+            this.slightlyMoveTimer--;
+
+            if (this.slightlyMoveTimer == 0) {
+                this.slightlyMoveOverride = Math.round(Math.random() * 4 - 2);
+                this.slightlyMoveTimer = Math.round(Math.random() * 60) + 60;
+            }
+        }
+
+        this.headBob = this.slightlyMoveOverride;
+    }
+});
