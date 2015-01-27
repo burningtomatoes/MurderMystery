@@ -5,6 +5,7 @@ var Officer = Entity.extend({
     slightlyMoveOverride: 0,
 
     name: null,
+    title: null,
 
     init: function () {
         this._super();
@@ -18,11 +19,13 @@ var Officer = Entity.extend({
 
         this.slightlyMoveTimer = 30;
 
+        this.title = 'Officer';
+
         this.name = Names.getRandomOfficerName();
     },
 
     getNamePrefix: function () {
-        return 'Officer';
+        return this.title;
     },
 
     getDisplayName: function () {

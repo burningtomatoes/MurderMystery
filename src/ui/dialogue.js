@@ -27,7 +27,10 @@ var Dialogue = {
             return;
         }
 
-        $('.dialogue').delay(100).fadeIn('fast').html('');
+        $('.dialogue').delay(100).fadeIn('fast').find('.content').html('');
+        $('.dialogue .next').remove();
+        $('.dialogue .name').text(this.pages[0].name);
+
         this.running = true;
     },
 
@@ -62,11 +65,16 @@ var Dialogue = {
                 var textWritten = currentText.substr(0, this.currentTickerIdx);
 
                 var $dialogue = $('.dialogue');
+                var $content = $dialogue.find('.content');
                 var $textSpan = $('<span />');
 
-                $dialogue.html('');
+                var $name = $dialogue.find('.name');
+                $name.text(this.currentPage.name);
+
+                $content.html('');
+                $dialogue.find('.next').remove();
                 $textSpan.text(textWritten);
-                $textSpan.appendTo($dialogue);
+                $textSpan.appendTo($content);
 
                 if (this.currentPage.player) {
                     $dialogue.css('color', '#5882FA');
