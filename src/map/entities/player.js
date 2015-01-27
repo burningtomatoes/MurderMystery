@@ -26,7 +26,20 @@ var Player = Entity.extend({
         return 'The Detective';
     },
 
+    footstepDelayer: 0,
+
     update: function() {
+        if (this.velocityX != 0 || this.velocityY != 0) {
+            if (this.footstepDelayer > 0) {
+                this.footstepDelayer--;
+            }
+
+            if (this.footstepDelayer == 0) {
+                Sfx.play('footstep.wav', 0.25);
+                this.footstepDelayer = 20;
+            }
+        }
+
         if (!this.isTeleporting && this.canControl) {
             if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) {
                 this.velocityX = -this.movementSpeed;

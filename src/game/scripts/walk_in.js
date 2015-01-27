@@ -18,6 +18,8 @@ var scrWalkIn = Script.extend({
         this.map.player.canControl = false;
 
         this.map.player.velocityY = -1;
+
+        Sfx.play('door_closing.wav');
     },
 
     update: function () {

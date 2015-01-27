@@ -16,7 +16,11 @@ var Sfx = {
         return Sfx.sounds[fileName];
     },
 
-    play: function(soundId) {
+    play: function(soundId, volume) {
+        if (volume == null) {
+            volume = 0.8;
+        }
+
         if (typeof Sfx.sounds[soundId] == 'undefined') {
             Sfx.load(soundId);
         } else {
@@ -24,6 +28,7 @@ var Sfx = {
             Sfx.sounds[soundId].load();
         }
 
+        Sfx.sounds[soundId].volume = volume;
         Sfx.sounds[soundId].play();
     }
 };
