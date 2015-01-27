@@ -27,6 +27,8 @@ var Game = {
 
                 Story.spawnGuests(map);
 
+                Music.loopSound('rain_loop.mp3');
+
                 map.runScript(scrWalkIn);
             });
         }.bind(this));
