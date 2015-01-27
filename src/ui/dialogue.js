@@ -27,7 +27,6 @@ var Dialogue = {
             return;
         }
 
-        Game.map.pause();
         $('.dialogue').delay(100).fadeIn('fast').html('');
         this.running = true;
     },
@@ -37,7 +36,6 @@ var Dialogue = {
             return;
         }
 
-        Game.map.resume();
         $('.dialogue').fadeOut('fast');
         this.running = false;
         this.dialogueCallback();
