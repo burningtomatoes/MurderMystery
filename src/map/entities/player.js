@@ -16,6 +16,14 @@ var Player = Entity.extend({
         this.spriteShadow = Gfx.load('shadow_body_generic');
     },
 
+    getNamePrefix: function () {
+        return '';
+    },
+
+    getDisplayName: function () {
+        return 'The Detective';
+    },
+
     update: function() {
         if (!this.isTeleporting) {
             if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) {

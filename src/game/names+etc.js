@@ -7,6 +7,8 @@ var Names = {
     LastNames: ['Barber', 'Alcock', 'Abraham', 'Angus', 'Clarke', 'Cunningham', 'Foster', 'Gallagher', "O'Keefe", 'Kneebone', 'Murphy', 'Palmer', 'Patterson', 'Phillips',
         'Porter', 'Riddington', 'Roberts', 'Shelton', 'Smith', 'Stewart', 'Taylor', 'Thomas', 'Trimble', 'Wakenshaw', 'Walton', 'Warner', 'Webber', 'Young'],
 
+    OfficerNames: ['Chavez', 'Miller', 'Williams', 'Rodriguez', 'Tucker', 'Winters', 'DeLaney', 'Hartley', 'Marshall', 'Parks'],
+
     getRandomMaleName: function () {
         var idx = chance.integer({
             min: 0,
@@ -32,6 +34,15 @@ var Names = {
         });
 
         return this.LastNames[idx];
+    },
+
+    getRandomOfficerName: function () {
+        var idx = chance.integer({
+            min: 0,
+            max: this.OfficerNames.length - 1
+        });
+
+        return this.OfficerNames[idx];
     }
 };
 

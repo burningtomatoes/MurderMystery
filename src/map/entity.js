@@ -86,6 +86,13 @@ var Entity = Class.extend({
         return !Game.map.isRectBlocked(projectedRect, this.isNpc, this);
     },
 
+    getNamePrefix: function () {
+        return '';
+    },
+
+    getDisplayName: function () {
+        return '???';
+    },
 
     draw: function (ctx) {
         ctx.save();

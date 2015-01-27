@@ -4,6 +4,8 @@ var Officer = Entity.extend({
     slightlyMoveTimer: 0,
     slightlyMoveOverride: 0,
 
+    name: null,
+
     init: function () {
         this._super();
 
@@ -15,6 +17,16 @@ var Officer = Entity.extend({
         this.spriteShadow = Gfx.load('shadow_body_generic');
 
         this.slightlyMoveTimer = 30;
+
+        this.name = Names.getRandomOfficerName();
+    },
+
+    getNamePrefix: function () {
+        return 'Officer';
+    },
+
+    getDisplayName: function () {
+        return this.getNamePrefix() + ' ' + this.name;
     },
 
     update: function () {
