@@ -87,47 +87,43 @@ Rooms.push(new Room({
     name: 'Front Room',
     canMurder: false,
     maxOccupants: 1,
-    mapId: 'main_room'
+    mapId: 'main_room',
+    hallwaySide: 'top',
+    hallwayPosY: 0
 }));
 
 Rooms.push(new Room({
     name: 'Bathroom',
     canMurder: false,
     maxOccupants: 1,
-    mapId: 'bath_room'
+    mapId: 'bath_room',
+    hallwaySide: 'left',
+    hallwayPosY: 528
 }));
 
 Rooms.push(new Room({
     name: 'Dining Room',
     canMurder: true,
     maxOccupants: 2,
-    mapId: 'dining_room'
+    mapId: 'dining_room',
+    hallwaySide: 'right',
+    hallwayPosY: 528
 }));
 
 Rooms.push(new Room({
     name: 'Master Bedroom',
     canMurder: true,
     maxOccupants: 2,
-    mapId: 'bed_room_1'
+    mapId: 'bed_room_1',
+    hallwaySide: 'left',
+    hallwayPosY: 752
 }));
 
 Rooms.push(new Room({
     name: 'Guest Bedroom',
     canMurder: true,
     maxOccupants: 2,
-    mapId: 'bed_room_2'
-}));
-
-Rooms.push(new Room({
-    name: 'Study',
-    canMurder: true,
-    maxOccupants: 2,
-    mapId: 'office_room'
-}));
-
-Rooms.push(new Room({
-    name: 'Rec Room',
-    canMurder: true,
-    maxOccupants: 2,
-    mapId: 'billiard_room'
+    mapId: 'bed_room_2',
+    hallwaySide: 'right',
+    hallwayPosY: 752
 }));

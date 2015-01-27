@@ -53,19 +53,22 @@ var scrWalkIn = Script.extend({
         }
 
         // Part two: Copper walks through the hallway, informing us of the room it all went down it.
-        if (this.copWalking && this.introCop.posY <= 528) {
+        if (this.copWalking && this.introCop.posY <= Story.murderRoom.hallwayPosY) {
             this.introCop.velocityY = 0;
 
             var onDialogueComplete = function () {
                 Camera.followEntity(this.map.player);
                 this.map.player.canControl = true;
                 this.introCop.velocityY = -1;
+                this.introCop.direction = Direction.UP;
             }.bind(this);
 
             Camera.followEntity(this.introCop);
 
+            this.introCop.direction = Story.murderer.hallwaySide == 'left' ? Direction.LEFT : Direction.RIGHT;
+
             Dialogue.prepare([
-                { text: 'The door on your right is where the shit hit the fan. It\'s the ' + Story.murderRoom.name + '.', name: this.introCop.getDisplayName() },
+                { text: 'The door on your ' + Story.murderRoom.hallwaySide + ' is where the shit hit the fan. It\'s the ' + Story.murderRoom.name + '.', name: this.introCop.getDisplayName() },
                 { text: 'You\'ll want to talk to that old fart in there, the medical examiner.' }
             ], onDialogueComplete);
 
