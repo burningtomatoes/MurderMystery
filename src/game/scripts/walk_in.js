@@ -13,6 +13,7 @@ var scrWalkIn = Script.extend({
         this.introCop.posY = 850;
         this.introCop.title = 'Sergeant';
         this.introCop.spriteBody = Gfx.load('body_officer_leader');
+        this.introCop.clipping = false;
         this.map.add(this.introCop);
 
         this.map.player.posX = 492;
@@ -78,12 +79,18 @@ var scrWalkIn = Script.extend({
             this.copWalkingTwo = true;
         }
 
+        // Part three: Copper walks to the living room, calls people idiots, and he's done for now.
         if (this.copWalkingTwo && this.introCop.posY <= 348) {
             this.introCop.velocityY = 0;
 
             var onDialogueComplete = function () {
                 Camera.followEntity(this.map.player);
                 this.map.player.canControl = true;
+
+                // Fix issue where the player can get stuck in the Sgt
+                while (!this.map.player.canMoveAnywhere()) {
+                    this.map.player.posX += 1;
+                }
             }.bind(this);
 
             Camera.followEntity(this.introCop);

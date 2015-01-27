@@ -37,13 +37,13 @@ var Guest = Entity.extend({
     findFreePosition: function () {
         do {
             this.posX = chance.integer({
-                min: Settings.tileSize,
-                max: this.map.widthPx - Settings.tileSize
+                min: 30,
+                max: 955
             });
 
             this.posY = chance.integer({
-                min: Settings.tileSize,
-                max: this.map.heightPx - Settings.tileSize
+                min: 190,
+                max: 330
             });
 
             this.direction = chance.integer({

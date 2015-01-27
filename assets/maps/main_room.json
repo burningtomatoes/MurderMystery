@@ -181,7 +181,7 @@
          "opacity":1,
          "properties":
             {
-             "npc_block_1":""
+             "npc_block":"1"
             },
          "type":"tilelayer",
          "visible":false,

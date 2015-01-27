@@ -36,6 +36,7 @@ var Entity = Class.extend({
     hurtTimer: 0,
 
     causesCollision: true,
+    clipping: true,
 
     map: null,
 
@@ -63,30 +64,45 @@ var Entity = Class.extend({
     },
 
     canMoveLeft: function () {
+        if (!this.clipping) {
+            return true;
+        }
         var projectedPosX = this.posX - this.movementSpeed;
         var projectedRect = this.getRect(projectedPosX, null);
         return !Game.map.isRectBlocked(projectedRect, this.isNpc, this);
     },
 
     canMoveRight: function () {
+        if (!this.clipping) {
+            return true;
+        }
         var projectedPosX = this.posX + this.movementSpeed;
         var projectedRect = this.getRect(projectedPosX, null);
         return !Game.map.isRectBlocked(projectedRect, this.isNpc, this);
     },
 
     canMoveUp: function () {
+        if (!this.clipping) {
+            return true;
+        }
         var projectedPosY = this.posY - this.movementSpeed;
         var projectedRect = this.getRect(null, projectedPosY);
         return !Game.map.isRectBlocked(projectedRect, this.isNpc, this);
     },
 
     canMoveDown: function () {
+        if (!this.clipping) {
+            return true;
+        }
         var projectedPosY = this.posY + this.movementSpeed;
         var projectedRect = this.getRect(null, projectedPosY);
         return !Game.map.isRectBlocked(projectedRect, this.isNpc, this);
     },
 
     canMoveAnywhere: function () {
+        if (!this.clipping) {
+            return true;
+        }
         return (this.canMoveLeft() || this.canMoveDown() || this.canMoveUp() || this.canMoveRight());
     },
 
