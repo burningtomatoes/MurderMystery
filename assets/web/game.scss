@@ -60,10 +60,11 @@ canvas {
   image-rendering: pixelated;
   -ms-interpolation-mode: nearest-neighbor;
 }
-#game, #hud {
-  $width: 640px * 2;
-  $height: 400px * 2;
 
+$width: 640px * 2;
+$height: 400px * 2;
+
+#game, #hud, #text {
   position: fixed;
   width: $width;
   height: $height;
@@ -85,6 +86,12 @@ canvas {
     top: 15px;
     right: 15px;
   }
+}
+#text {
+  z-index: 300;
+  padding-top: $height / 3 + 40px;
+  text-align: center;
+  text-shadow: 0 1px 1px #000;
 }
 
 /** Boot logo **/

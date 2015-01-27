@@ -19,10 +19,16 @@ var Game = {
         // This will generate the characters, where they were, what they did, what they know, etc.
         Story.generateStory();
 
-        // Load up the main hall / living room and spawn the guests in the living room.
-        this.loadMap('main_room', function (map) {
-            Story.spawnGuests(map);
-        });
+        // Show the intro text (nametag / time)
+        IntroText.run(function (e) {
+            // Load up the main hall / living room and spawn the guests in the living room.
+            this.loadMap('main_room', function (map) {
+                e.done();
+                Story.spawnGuests(map);
+            });
+        }.bind(this));
+
+
     },
 
     resetting: false,
@@ -65,7 +71,7 @@ var Game = {
         var mapReady = function () {
             loadCallback(this.map);
 
-            Canvas.$canvas.delay(200).fadeIn(this.lastMapId == null ? 2000 : 'fast');
+            Canvas.$canvas.fadeIn(this.lastMapId == null ? 2000 : 'fast');
             this.lastMapId = id;
         }.bind(this);
 
