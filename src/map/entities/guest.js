@@ -34,10 +34,6 @@ var Guest = Entity.extend({
         this.spriteShadow = Gfx.load('shadow_body_generic');
     },
 
-    canMoveAnywhere: function () {
-        return this.canMoveLeft() || this.canMoveDown() || this.canMoveUp() || this.canMoveRight();
-    },
-
     findFreePosition: function () {
         do {
             this.posX = chance.integer({

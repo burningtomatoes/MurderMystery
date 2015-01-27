@@ -24,7 +24,10 @@ var Game = {
             // Load up the main hall / living room and spawn the guests in the living room.
             this.loadMap('main_room', function (map) {
                 e.done();
+
                 Story.spawnGuests(map);
+
+                map.runScript(scrWalkIn);
             });
         }.bind(this));
 

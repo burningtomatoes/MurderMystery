@@ -467,6 +467,15 @@ var Map = Class.extend({
         }
     },
 
+    script: null,
+
+    runScript: function (scriptObj) {
+        scriptObj = new scriptObj(this);
+        scriptObj.run();
+
+        this.script = scriptObj;
+    },
+
     update: function () {
         if (this.paused) {
             return;
@@ -474,6 +483,10 @@ var Map = Class.extend({
 
         this.updateEntities();
         this.updateTileAnimations();
+
+        if (this.script != null) {
+            this.script.update();
+        }
     },
 
     updateEntities: function () {

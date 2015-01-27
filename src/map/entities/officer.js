@@ -32,15 +32,17 @@ var Officer = Entity.extend({
     update: function () {
         this._super();
 
-        if (this.slightlyMoveTimer > 0) {
-            this.slightlyMoveTimer--;
+        if (this.velocityX == 0 && this.velocityY == 0) {
+            if (this.slightlyMoveTimer > 0) {
+                this.slightlyMoveTimer--;
 
-            if (this.slightlyMoveTimer == 0) {
-                this.slightlyMoveOverride = Math.round(Math.random() * 4 - 2);
-                this.slightlyMoveTimer = Math.round(Math.random() * 60) + 60;
+                if (this.slightlyMoveTimer == 0) {
+                    this.slightlyMoveOverride = Math.round(Math.random() * 4 - 2);
+                    this.slightlyMoveTimer = Math.round(Math.random() * 60) + 60;
+                }
             }
-        }
 
-        this.headBob = this.slightlyMoveOverride;
+            this.headBob = this.slightlyMoveOverride;
+        }
     }
 });

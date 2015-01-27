@@ -123,3 +123,41 @@ $height: 400px * 2;
     font-size: 14pt;
   }
 }
+
+/** Dialogue **/
+.dialogue {
+  background: rgba(0, 0, 0, 0.65);
+  position: fixed;
+  width: 600px;
+  height: 200px;
+  z-index: 999999;
+  color: #fff;
+  text-shadow: 0 1px 1px #000;
+  bottom: 100px;
+  left: 50%;
+  margin-left: -300px;
+  font-size: 6pt * 3;
+  text-align: left;
+  padding: 0 25px;
+
+  span {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+  }
+
+  .next {
+    display: block;
+    color: #fff;
+    border: 1px solid #ccc;
+    font-size: 6pt * 2;
+    padding: 2px;
+    text-align: center;
+    width: 100px;
+    border-radius: 2px;
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+  }
+}

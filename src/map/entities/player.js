@@ -5,6 +5,8 @@ var Player = Entity.extend({
 
     isPlayer: true,
 
+    canControl: false,
+
     init: function() {
         this._super();
 
@@ -25,7 +27,7 @@ var Player = Entity.extend({
     },
 
     update: function() {
-        if (!this.isTeleporting) {
+        if (!this.isTeleporting && this.canControl) {
             if (Keyboard.isKeyDown(KeyEvent.DOM_VK_LEFT) || Keyboard.isKeyDown(KeyEvent.DOM_VK_A)) {
                 this.velocityX = -this.movementSpeed;
                 this.direction = Direction.LEFT;

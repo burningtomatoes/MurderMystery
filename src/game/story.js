@@ -3,6 +3,7 @@ var Story = {
 
     guests: [],
     murderer: null,
+    murderRoom: null,
 
     generateStory: function () {
         // Step zero: Mop up the corpses and stuff from any previous games.
@@ -43,20 +44,20 @@ var Story = {
         }
 
         // Step four: assign the murder to a random room and victimize a guest
-        var murderRoom = Rooms.selectMurderRoom();
+        this.murderRoom = Rooms.selectMurderRoom();
 
-        this.victim = murderRoom.occupants[0];
+        this.victim = this.murderRoom.occupants[0];
         this.victim.isDead = true;
 
-        if (murderRoom.occupants.length > 0) {
-            for (var i = 1; i < murderRoom.occupants.length; i++) {
-                var witness = murderRoom.occupants[i];
+        if (this.murderRoom.occupants.length > 0) {
+            for (var i = 1; i < this.murderRoom.occupants.length; i++) {
+                var witness = this.murderRoom.occupants[i];
                 witness.isWitness = true;
             }
         }
 
-        murderRoom.occupants.push(this.murderer);
-        this.murderer.room = murderRoom;
+        this.murderRoom.occupants.push(this.murderer);
+        this.murderer.room = this.murderRoom;
 
 
         if (Settings.showStoryTool) {

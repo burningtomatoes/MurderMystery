@@ -86,6 +86,10 @@ var Entity = Class.extend({
         return !Game.map.isRectBlocked(projectedRect, this.isNpc, this);
     },
 
+    canMoveAnywhere: function () {
+        return (this.canMoveLeft() || this.canMoveDown() || this.canMoveUp() || this.canMoveRight());
+    },
+
     getNamePrefix: function () {
         return '';
     },
