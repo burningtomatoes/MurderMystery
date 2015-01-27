@@ -8,6 +8,7 @@ var Story = {
     generateStory: function () {
         // Step zero: Mop up the corpses and stuff from any previous games.
         Rooms.cleanUp();
+        Outfitter.reset();
 
         // Step one: generate a random selection of guests.
         this.generateGuests();
@@ -93,7 +94,8 @@ var Story = {
             namesUsed.push(completeName);
 
             // Create an actual guest entity. This entity combines guest logic with an actual NPC on the map.
-            var guest = new Guest(firstName, lastName, gender, maritalStatus, 'male_1', 'suit_black');
+            var outfit = Outfitter.generateUniqueOutfit(gender);
+            var guest = new Guest(firstName, lastName, gender, maritalStatus, outfit.head, outfit.body);
             // TODO Random bodies & heads instead of officer...
             this.guests.push(guest);
         }
