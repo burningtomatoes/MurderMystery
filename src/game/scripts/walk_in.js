@@ -11,7 +11,7 @@ var scrWalkIn = Script.extend({
         this.introCop = new Officer();
         this.introCop.posX = 492;
         this.introCop.posY = 850;
-        this.introCop.title = 'Seargent';
+        this.introCop.title = 'Sergeant';
         this.introCop.spriteBody = Gfx.load('body_officer_leader');
         this.map.add(this.introCop);
 
