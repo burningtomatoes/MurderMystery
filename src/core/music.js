@@ -9,9 +9,14 @@ var Music = {
         return this.sounds[filename];
     },
 
-    loopSound: function(filename) {
+    loopSound: function(filename, volume) {
+        if (volume == null) {
+            volume = 0.8;
+        }
+
         var sound = this.prepareSound(filename);
         sound.currentTime = 0;
+        sound.volume = volume;
         sound.addEventListener('ended', function() {
             this.currentTime = 0;
             this.load();
