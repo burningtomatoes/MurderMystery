@@ -14,5 +14,6 @@ var Settings = {
 
     skipBootLogo: true,
     countFps: true,
-    showStoryTool: true
+    showStoryTool: true,
+    skipIntroScript: true
 };

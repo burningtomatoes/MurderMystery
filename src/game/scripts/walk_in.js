@@ -6,8 +6,6 @@ var scrWalkIn = Script.extend({
     introCop: null,
 
     run: function () {
-        this.walkingIn = true;
-
         this.introCop = new Officer();
         this.introCop.posX = 492;
         this.introCop.posY = 850;
@@ -18,9 +16,16 @@ var scrWalkIn = Script.extend({
 
         this.map.player.posX = 492;
         this.map.player.posY = 965;
-        this.map.player.canControl = false;
 
-        this.map.player.velocityY = -1;
+        if (!Settings.skipIntroScript) {
+            this.map.player.canControl = false;
+            this.map.player.velocityY = -1;
+            this.walkingIn = true;
+        } else {
+            this.map.player.canControl = true;
+            this.walkingIn = false;
+            this.introCop.posY = 348;
+        }
 
         Sfx.play('door_closing.wav');
     },
