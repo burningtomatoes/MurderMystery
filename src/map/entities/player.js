@@ -59,6 +59,17 @@ var Player = Entity.extend({
             } else {
                 this.velocityY = 0;
             }
+
+            if (Keyboard.wasKeyPressed(KeyEvent.DOM_VK_SPACE)) {
+                var interactRect = this.getInteractRadius();
+
+                var entities = this.map.getEntitiesInRect(interactRect, this);
+                var entity = entities.length > 0 ? entities[0] : null;
+
+                if (entity != null) {
+                    entity.interact(this);
+                }
+            }
         }
 
         this._super();

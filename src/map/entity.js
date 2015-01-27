@@ -233,5 +233,59 @@ var Entity = Class.extend({
         rect.right = rect.left + rect.width;
         // TODO Specific collision masks for left/right directions?
         return rect;
+    },
+
+    interact: function (player) {
+        player.canControl = false;
+
+        var textCompleteCallback = function () {
+            player.canControl = true;
+            Camera.followEntity(player);
+        };
+
+        Camera.followEntity(this);
+
+        Dialogue.prepare([
+            { text: 'Uh...hi there.', name: this.getDisplayName()
+        }], textCompleteCallback);
+        Dialogue.show();
+    },
+
+    getInteractRadius: function () {
+        var baseRect = this.getRect();
+
+        var interactRange = 10;
+
+        var margin = 6;
+        switch (this.direction) {
+            default:
+            case Direction.DOWN:
+                baseRect.top += this.height - margin;
+                baseRect.height = interactRange;
+                baseRect.width = interactRange;
+                baseRect.left += this.width / 2;
+                break;
+            case Direction.UP:
+                baseRect.top -= this.height;
+                baseRect.height = interactRange;
+                baseRect.width = interactRange;
+                break;
+            case Direction.LEFT:
+                baseRect.height = interactRange;
+                baseRect.width = interactRange;
+                baseRect.left -= baseRect.width / 2;
+                baseRect.top += margin;
+                break;
+            case Direction.RIGHT:
+                baseRect.height = interactRange;
+                baseRect.width = interactRange;
+                baseRect.left += baseRect.width;
+                baseRect.top -= margin;
+                break;
+        }
+
+        baseRect.bottom = baseRect.top + baseRect.height;
+        baseRect.right = baseRect.left + baseRect.width;
+        return baseRect;
     }
 });
