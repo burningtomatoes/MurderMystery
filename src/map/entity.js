@@ -238,12 +238,12 @@ var Entity = Class.extend({
     doBasicDialogue: function (player, data, cb) {
         player.canControl = false;
 
-        var textCompleteCallback = function () {
+        var textCompleteCallback = function (payload) {
             player.canControl = true;
             Camera.followEntity(player);
 
             if (cb) {
-                cb();
+                cb(payload);
             }
         };
 

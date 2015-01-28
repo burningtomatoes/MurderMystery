@@ -16,6 +16,7 @@ var Dialogue = {
         this.typeDelay = 30;
         this.fastMode = false;
         this.dialogueCallback = callback;
+        this.optionHooks = [];
 
         if (this.dialogueCallback == null) {
             this.dialogueCallback = function() { };
@@ -34,15 +35,17 @@ var Dialogue = {
         this.running = true;
     },
 
-    hide: function() {
+    hide: function(payload) {
         if (!this.running) {
             return;
         }
 
         $('.dialogue').fadeOut('fast');
         this.running = false;
-        this.dialogueCallback();
+        this.dialogueCallback(payload);
     },
+
+    optionHooks: [],
 
     update: function() {
         if (!this.running) {
@@ -56,6 +59,15 @@ var Dialogue = {
         var currentText = this.currentPage.text;
         var anyLeft = currentText.length > this.currentTickerIdx;
 
+        for (var i = 0; i < this.optionHooks.length; i++) {
+            var number = this.optionHooks[i];
+
+            if (Keyboard.wasKeyPressed(KeyEvent['DOM_VK_' + number])) {
+                this.hide(number);
+                return;
+            }
+        }
+
         if (this.typeDelay <= 0) {
             if (anyLeft) {
                 this.currentTickerIdx++;
@@ -65,6 +77,7 @@ var Dialogue = {
                 var textWritten = currentText.substr(0, this.currentTickerIdx);
 
                 var $dialogue = $('.dialogue');
+                $dialogue.find('.options').hide();
                 var $content = $dialogue.find('.content');
                 var $textSpan = $('<span />');
 
@@ -90,10 +103,32 @@ var Dialogue = {
                 anyLeft = currentText.length > this.currentTickerIdx;
 
                 if (!anyLeft) {
-                    $('<div />')
-                        .addClass('next')
-                        .text('Space')
-                        .appendTo($dialogue);
+                    if (this.currentPage.options != null) {
+                        var $options = $dialogue.find('.options');
+                        $options.html('');
+                        $options.show();
+
+                        var idx = 0;
+                        this.optionHooks = [];
+
+                        for (var i = 0; i < this.currentPage.options.length; i++) {
+                            var option = this.currentPage.options[i];
+
+                            idx++;
+
+                            var $option = $('<div />')
+                                .addClass('option')
+                                .text('[Press ' + idx + '] ' + option)
+                                .appendTo($options);
+
+                            this.optionHooks.push(idx);
+                        }
+                    } else {
+                        $('<div />')
+                            .addClass('next')
+                            .text('Space')
+                            .appendTo($dialogue);
+                    }
                 }
             }
 

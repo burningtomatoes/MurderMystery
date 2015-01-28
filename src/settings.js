@@ -12,8 +12,8 @@
 var Settings = {
     tileSize: 32,
 
-    skipBootLogo: false,
-    countFps: false,
-    showStoryTool: false,
-    skipIntroScript: false
+    skipBootLogo: true,
+    countFps: true,
+    showStoryTool: true,
+    skipIntroScript: true
 };

@@ -30,12 +30,27 @@ var scrWalkIn = Script.extend({
                 }, {
                     text: "We already tried talking to them, but their stories don't quite add up. I wish I could just arrest all of these idiots and call it a day."
                 }]);
-            } else {
+                    } else {
+                        var cb = function (payload) {
+                            if (payload == 1) {
+                                this.introCop.doBasicDialogue(player, [{
+                                    name: this.introCop.getDisplayName(),
+                                    text: "Okay, so, plot twist. You were the murderer all along!"
+                                }, {
+                                    text: "Haha, no, just kidding, that would be a pretty bad ending."
+                                }, {
+                                    text: "But seriously though, it was " + Story.murderer.getDisplayName() + '. They\'re the killer. Did you guess right?'
+                                }, {
+                                    text: "(Yeah so I ran out of time, as always, sorry about the lack of a proper ending to this drama)", name: "(The Developer)"
+                                }]);
+                    }
+                }.bind(this);
+
                 this.introCop.doBasicDialogue(player, [{
                     name: this.introCop.getDisplayName(),
                     text: "Detective, I think it's about time to wrap up. Are you ready, did you crack the case?",
-                    choice: ['Yes, I know who did it.', 'No, I need more time.']
-                }]);
+                    options: ['Yes, I know who did it.', 'No, I need more time.']
+                }], cb);
             }
 
         }.bind(this);
