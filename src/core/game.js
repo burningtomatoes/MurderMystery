@@ -78,6 +78,8 @@ var Game = {
 
             Canvas.$canvas.fadeIn(this.lastMapId == null ? 2000 : 'fast');
             this.lastMapId = id;
+
+            Camera.onMapLoaded();
         }.bind(this);
 
         var execLoad = function() {

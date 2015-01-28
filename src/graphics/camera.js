@@ -8,6 +8,21 @@ var Camera = {
     yLocked: false,
     xLocked: false,
 
+    onMapLoaded: function () {
+        this.xLocked = (Canvas.canvas.width > Game.map.widthPx);
+        this.yLocked = (Canvas.canvas.height > Game.map.heightPx);
+
+        var e = this.trackingEntity;
+
+        if (this.xLocked || this.yLocked) {
+            this.centerToMap();
+        }
+
+        if (e != null) {
+            this.followEntity(e, true);
+        }
+    },
+
     translateX: function(x) {
         return Math.round(x + this.applyX);
     },

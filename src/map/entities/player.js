@@ -5,7 +5,7 @@ var Player = Entity.extend({
 
     isPlayer: true,
 
-    canControl: false,
+    canControl: true,
 
     init: function() {
         this._super();
@@ -68,27 +68,21 @@ var Player = Entity.extend({
 
                 if (entity != null) {
                     entity.interact(this);
+                    return;
+                }
+
+                var teleport = this.map.getTeleport(interactRect);
+
+                if (teleport != null) {
+                    this.isTeleporting = true;
+                    Game.loadMap(teleport);
+                    this.map.remove(this);
+                    Sfx.play('door_closing.wav');
+                    return;
                 }
             }
         }
 
         this._super();
-
-        if (this.isTeleporting) {
-            if (this.teleportTimer > 0) {
-                this.teleportTimer--;
-
-                if (this.teleportTimer == 0) {
-                    Game.loadMap(this.teleportTo);
-                }
-            }
-        } else {
-            var teleportTo = Game.map.getTeleport(this.getRect());
-            if (!this.isTeleporting && teleportTo != null) {
-                this.isTeleporting = true;
-                this.teleportTo = teleportTo;
-                this.teleportTimer = 30;
-            }
-        }
     }
 });

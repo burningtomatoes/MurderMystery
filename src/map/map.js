@@ -151,11 +151,10 @@ var Map = Class.extend({
     },
 
     redeploy: function () {
-        this.remove(this.player);
+        Camera.followEntity(this.player, true);
 
-        var player = new Player();
-        this.configurePlayerSpawn(player);
-        this.addPlayer(player);
+        this.player.isTeleporting = false;
+        this.player.canControl = true;
     },
 
     blockedRects: [],
