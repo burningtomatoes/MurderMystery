@@ -132,7 +132,7 @@ var Story = {
             if (guest.isMurderer) {
                 $ds.append('MURDERER');
             } else if (guest.isDead) {
-                $ds.append('DEAD');
+                $ds.append('DEAD<br />IN ' + this.murderRoom.name);
             } else if (guest.isWitness) {
                 $ds.append('WITNESS');
             } else {

@@ -88,6 +88,10 @@ var Map = Class.extend({
             if (typeof(layer.properties) == 'undefined') {
                 layer.properties = {};
             }
+
+            if (layer.properties.death == '1' && !this.isMurderRoom()) {
+                layer.visible = false;
+            }
         }
 
         // Calculate blocking tiles, teleports, etc
@@ -117,6 +121,10 @@ var Map = Class.extend({
 
         // Update HUD
         $('#location').text(this.data.properties.name);
+    },
+
+    isMurderRoom: function () {
+        return Story.murderRoom.mapId == this.id;
     },
 
     configurePlayerSpawn: function (playerEntity) {
@@ -166,7 +174,13 @@ var Map = Class.extend({
 
         for (var i = 0; i < layerCount; i++) {
             var layer = this.layers[i];
+            var isDeathLayer = this.isMurderRoom() && layer.properties.death == '1';
+
             var spawnId = layer.properties.spawn;
+
+            if (isDeathLayer) {
+                spawnId = 'officer';
+            }
 
             if (spawnId == null) {
                 continue;
@@ -190,6 +204,16 @@ var Map = Class.extend({
                 if (tid === 0) {
                     // Invisible (no tile set for this position)
                     continue;
+                }
+
+                if (isDeathLayer) {
+                    if (tid == 8) {
+                        spawnId = 'officer';
+                    } else if (tid == 9) {
+                        spawnId = 'officer';
+                    } else {
+                        continue;
+                    }
                 }
 
                 var entity = null;
