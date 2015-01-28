@@ -94,8 +94,8 @@ Rooms.push(new Room({
 
 Rooms.push(new Room({
     name: 'Bathroom',
-    canMurder: false,
-    maxOccupants: 1,
+    canMurder: true,
+    maxOccupants: 2,
     mapId: 'bath_room',
     hallwaySide: 'left',
     hallwayPosY: 528

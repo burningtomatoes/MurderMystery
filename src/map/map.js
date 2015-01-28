@@ -208,7 +208,7 @@ var Map = Class.extend({
 
                 if (isDeathLayer) {
                     if (tid == 8) {
-                        spawnId = 'officer';
+                        spawnId = 'medicalExaminer';
                     } else if (tid == 9) {
                         spawnId = 'officer';
                     } else {
@@ -222,6 +222,23 @@ var Map = Class.extend({
                 switch (spawnId) {
                     default:
                         console.warn('[Entity] Unknown spawn type, have an Officer instead:', spawnId);
+                    case 'medicalExaminer':
+                        entity = new Officer();
+                        entity.spriteHead = Gfx.load('head_male_3');
+                        entity.getDisplayName = function () {
+                            return 'Medical Examiner';
+                        };
+                        entity.interact = function (player) {
+                            entity.doBasicDialogue(player, [
+                                { text: 'Hello, Detective. This is our victim, a ' + Story.victim.getDisplayName() + '.', name: 'Medical Examiner'},
+                                { text: 'From what I can tell, they died just an hour ago or so before you arrived.'},
+                                { text: 'It looks like the cause of death is a swift blunt blow to the head. No signs of struggle otherwise.' },
+                                { text: 'There\'s not a lot to go by here unfortunately. It was a quick death.' },
+                                { text: 'I think you should talk to our potential suspects. See if you can poke a hole through their stories.' }
+                            ]);
+                            Story.visitedScene = true;
+                        }.bind(this);
+                        break;
                     case 'officer':
                         entity = new Officer();
                         break;
@@ -431,6 +448,7 @@ var Map = Class.extend({
             var y = 0;
 
             var isBlocking = Settings.drawCollisions && typeof(layer.properties) != 'undefined' && layer.properties.blocked == '1';
+            var isDeathLayer = this.isMurderRoom() && layer.properties.death == '1';
 
             if (!Settings.drawCollisions && !layer.visible) {
                 continue;
@@ -449,6 +467,10 @@ var Map = Class.extend({
 
                 if (tid === 0) {
                     // Invisible (no tile set for this position)
+                    continue;
+                }
+
+                if (isDeathLayer && (tid == 8 || tid == 9)) {
                     continue;
                 }
 
