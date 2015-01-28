@@ -229,6 +229,7 @@ var Map = Class.extend({
                             return 'Medical Examiner';
                         };
                         entity.interact = function (player) {
+                            entity.lookAt(player);
                             entity.doBasicDialogue(player, [
                                 { text: 'Hello, Detective. This is our victim, a ' + Story.victim.getDisplayName() + '.', name: 'Medical Examiner'},
                                 { text: 'From what I can tell, they died just an hour ago or so before you arrived.'},

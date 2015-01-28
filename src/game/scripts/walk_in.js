@@ -16,6 +16,7 @@ var scrWalkIn = Script.extend({
         this.introCop.clipping = false;
 
         this.introCop.interact = function (player) {
+            this.introCop.lookAt(player);
             if (!Story.visitedScene) {
                 this.introCop.doBasicDialogue(player, [{
                     name: this.introCop.getDisplayName(),

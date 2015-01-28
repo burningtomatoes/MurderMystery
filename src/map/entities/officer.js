@@ -53,6 +53,7 @@ var Officer = Entity.extend({
     },
 
     interact: function (player) {
+        this.lookAt(player);
         this.doBasicDialogue(player, [{ name: this.getDisplayName(), text: this.getRandomChatter() }]);
     },
 

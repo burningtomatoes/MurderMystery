@@ -34,16 +34,30 @@ var Guest = Entity.extend({
         this.spriteShadow = Gfx.load('shadow_body_generic');
     },
 
+    busyTalking: false,
+
     interact: function (player) {
+        var onComplete = function () {
+            this.busyTalking = false;
+        }.bind(this);
+
+        this.busyTalking = true;
+        this.stopWalking();
+        this.lookAt(player);
+
         if (!Story.visitedScene) {
             var sgt = this.map.script.introCop;
 
             sgt.doBasicDialogue(player, [
                 { text: 'Hey, Detective, don\'t you think you should check out the murder scene before you go bothering our friends here?', name: sgt.getDisplayName() }
-            ]);
+            ], onComplete);
 
             return;
         }
+
+        this.doBasicDialogue(player, [
+            { text: 'I was in the ' + this.room.name + '. There were ' + (this.room.occupants.length - 1) + ' other guest(s) with me. Thank you.', name: this.getDisplayName() }
+        ], onComplete);
     },
 
     findFreePosition: function () {
@@ -91,6 +105,10 @@ var Guest = Entity.extend({
     currentAction: null,
 
     doSomething: function () {
+        if (this.busyTalking) {
+            return;
+        }
+
         this.restlessTimer = chance.integer({
             min: 60,
             max: 600

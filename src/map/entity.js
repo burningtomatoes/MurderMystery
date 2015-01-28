@@ -259,6 +259,23 @@ var Entity = Class.extend({
         ]);
     },
 
+    lookAt: function (entity) {
+        var xDiff = this.posX - entity.posX;
+        var yDiff = this.posY - entity.posY;
+
+        if (xDiff > 5) {
+            this.direction = Direction.LEFT;
+        } else if (xDiff < -5) {
+            this.direction = Direction.RIGHT;
+        }
+
+        if (yDiff > 5) {
+            this.direction = Direction.UP;
+        } else if (yDiff < -5) {
+            this.direction = Direction.DOWN;
+        }
+    },
+
     getInteractRadius: function () {
         var baseRect = this.getRect();
 
