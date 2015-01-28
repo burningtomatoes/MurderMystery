@@ -34,6 +34,18 @@ var Guest = Entity.extend({
         this.spriteShadow = Gfx.load('shadow_body_generic');
     },
 
+    interact: function (player) {
+        if (!this.visitedScene) {
+            var sgt = this.map.script.introCop;
+
+            sgt.doBasicDialogue(player, [
+                { text: 'Hey, Detective, don\'t you think you should check out the murder scene before you go bothering our friends here?', name: sgt.getDisplayName() }
+            ]);
+
+            return;
+        }
+    },
+
     findFreePosition: function () {
         do {
             this.posX = chance.integer({
