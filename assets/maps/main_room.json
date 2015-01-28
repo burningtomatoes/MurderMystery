@@ -203,6 +203,7 @@
  "orientation":"orthogonal",
  "properties":
     {
+     "name":"The Main Hall",
      "spawn_initial":"15,28,1"
     },
  "renderorder":"right-down",
