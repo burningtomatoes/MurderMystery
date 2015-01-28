@@ -6,10 +6,13 @@ var Story = {
     murderRoom: null,
 
     visitedScene: false,
+    interrogatedFolks: false,
 
     generateStory: function () {
         // Step zero: Mop up the corpses and stuff from any previous games.
         this.visitedScene = false;
+        this.interrogatedFolks = false;
+
         Rooms.cleanUp();
         Outfitter.reset();
 

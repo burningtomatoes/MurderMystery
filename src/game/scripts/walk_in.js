@@ -12,6 +12,31 @@ var scrWalkIn = Script.extend({
         this.introCop.title = 'Sergeant';
         this.introCop.spriteBody = Gfx.load('body_officer_leader');
         this.introCop.clipping = false;
+
+        this.introCop.interact = function (player) {
+            if (!Story.visitedScene) {
+                this.introCop.doBasicDialogue(player, [{
+                    name: this.introCop.getDisplayName(),
+                    text: "Go check out the murder scene, detective. It's the " + Story.murderRoom.name + ", just down the hall."
+                }]);
+            }
+            else if (!Story.interrogatedFolks) {
+                this.introCop.doBasicDialogue(player, [{
+                    name: this.introCop.getDisplayName(),
+                    text: "Did you check out the murder scene? You should probably look for clues and interrogate our suspects."
+                }, {
+                    text: "We already tried talking to them, but their stories don't quite add up. I wish I could just arrest all of these idiots and call it a day."
+                }]);
+            } else {
+                this.introCop.doBasicDialogue(player, [{
+                    name: this.introCop.getDisplayName(),
+                    text: "Detective, I think it's about time to wrap up. Are you ready, did you crack the case?",
+                    choice: ['Yes, I know who did it.', 'No, I need more time.']
+                }]);
+            }
+
+        }.bind(this);
+
         this.map.add(this.introCop);
 
         this.map.player.posX = 492;
