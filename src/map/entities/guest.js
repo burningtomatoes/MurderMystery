@@ -139,7 +139,7 @@ var Guest = Entity.extend({
 
         var personPage = null;
 
-        if (lying || allegedRoom.occupants.length == 1) {
+        if (allegedRoom.occupants.length == 1) {
             personPage = this.getRandomText(this.Texts.NooneElse);
         } else {
             var randomPerson = null;
