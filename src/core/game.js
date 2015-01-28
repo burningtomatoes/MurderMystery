@@ -80,6 +80,8 @@ var Game = {
             this.lastMapId = id;
 
             Camera.onMapLoaded();
+
+            $('#location').text(this.map.properties.name);
         }.bind(this);
 
         var execLoad = function() {
