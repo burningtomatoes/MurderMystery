@@ -235,26 +235,34 @@ var Entity = Class.extend({
         return rect;
     },
 
-    interact: function (player) {
+    doBasicDialogue: function (player, data, cb) {
         player.canControl = false;
 
         var textCompleteCallback = function () {
             player.canControl = true;
             Camera.followEntity(player);
+
+            if (cb) {
+                cb();
+            }
         };
 
         Camera.followEntity(this);
 
-        Dialogue.prepare([
-            { text: 'Uh...hi there.', name: this.getDisplayName()
-        }], textCompleteCallback);
+        Dialogue.prepare(data, textCompleteCallback);
         Dialogue.show();
+    },
+
+    interact: function (player) {
+        this.doBasicDialogue(player, [
+            { text: 'Uh...hi there.', name: this.getDisplayName() }
+        ]);
     },
 
     getInteractRadius: function () {
         var baseRect = this.getRect();
 
-        var interactRange = 10;
+        var interactRange = 20;
 
         var margin = 6;
         switch (this.direction) {
