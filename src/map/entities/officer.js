@@ -18,7 +18,14 @@ var Officer = Entity.extend({
         "...",
         "This house is weird. Looks more like crappy bungalow than a fancy manor house to me.",
         "What's with all these weird hair styles anyway? I don't think I get fashion.",
-        "These people should fire their interior decorators."
+        "These people should fire their interior decorators.",
+        "This rain looks weird.",
+        "I bet it's a crime of passion.",
+        "I bet it's something to with an inheritance.",
+        "I bet the murderer just got bored. Can't blame them either, really.",
+        "I'd be a lot warmer and a lot happier with a belly full of mead.",
+        "I used to be a detective like you, but then I took an arrow to the knee.",
+        "No lollygagging'.",
     ],
 
     init: function () {
