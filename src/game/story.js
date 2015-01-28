@@ -112,6 +112,12 @@ var Story = {
 
         for (var i = 0; i < guestsLength; i++) {
             var guest = this.guests[i];
+
+            if (guest == this.victim) {
+                // Yeah, the victim isn't around anymore.
+                continue;
+            }
+
             map.add(guest);
             guest.findFreePosition();
         }

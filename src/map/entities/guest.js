@@ -35,7 +35,7 @@ var Guest = Entity.extend({
     },
 
     interact: function (player) {
-        if (!this.visitedScene) {
+        if (!Story.visitedScene) {
             var sgt = this.map.script.introCop;
 
             sgt.doBasicDialogue(player, [
