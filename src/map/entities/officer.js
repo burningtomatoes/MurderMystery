@@ -7,6 +7,20 @@ var Officer = Entity.extend({
     name: null,
     title: null,
 
+    randomChatter: [
+        "Ugh, I can't believe I'm stuck here on my one free night...",
+        "At least I'm dry inside, I guess.",
+        "My legs are cramping up. I hate just standing around for no good reason.",
+        "Do you really need me, Detective? I feel like I'm just part of the furniture.",
+        "Come on, these folks aren't going anywhere. Can I go home yet?",
+        "Why are you talking to me, Detective? Don't you have a murder to solve?",
+        "Why are you looking at me like that? I'm not a piece of evidence, you know.",
+        "...",
+        "This house is weird. Looks more like crappy bungalow than a fancy manor house to me.",
+        "What's with all these weird hair styles anyway? I don't think I get fashion.",
+        "These people should fire their interior decorators."
+    ],
+
     init: function () {
         this._super();
 
@@ -22,6 +36,17 @@ var Officer = Entity.extend({
         this.title = 'Officer';
 
         this.name = Names.getRandomOfficerName();
+    },
+
+    getRandomChatter: function () {
+        return this.randomChatter[chance.integer({
+            min: 0,
+            max: this.randomChatter.length - 1
+        })];
+    },
+
+    interact: function (player) {
+        this.doBasicDialogue(player, [{ name: this.getDisplayName(), text: this.getRandomChatter() }]);
     },
 
     getNamePrefix: function () {
