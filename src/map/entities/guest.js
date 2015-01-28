@@ -32,9 +32,71 @@ var Guest = Entity.extend({
         this.spriteHead = Gfx.load('head_' + head);
         this.spriteBody = Gfx.load('body_' + body);
         this.spriteShadow = Gfx.load('shadow_body_generic');
+
+        this.wasTalkedTo = false;
+    },
+
+    Texts: {
+        DoneTalking: [
+            "I'm done talking to you.",
+            "Please leave me alone. I've told you everything.",
+            "Can I just go home, please? I'm done talking.",
+            "Go away. Go bother someone else. I've said what I need to say.",
+            "No, we're not doing this again. You and me, we're done talking.",
+            "I am so sick and tired of repeating myself over and over again.",
+            "Are you back again, Detective? I've told you all I know.",
+            "I'm sorry, but that's all I remember! I can't tell you more than that."
+        ],
+        Intro: [
+            "Oh, great, another copper. Listen, I already told your colleagues everything.",
+            "Who are you, Sherlock bloody Holmes? You look like an idiot. What do you want?",
+            "Can I please just go home? Do I really need to keep repeating this?",
+            "I'm innocent! Why won't any of you believe me!?",
+            "I'm telling you, I didn't do it. I wasn't even there when it happened.",
+            "Ask anyone in this room. It wasn't me. I didn't do it. I wouldn't hurt a fly.",
+            "I'll tell you anything you need to know, as long as I can get out of here soon.",
+            "Thank God you're here Detective. Please catch the killer, I'm terrified. I can't believe one of these people would do such a thing."
+        ],
+        WhereIWas: [
+            "When it all went down, I was in the %room%.",
+            "I was in the %room% when it all happened.",
+            "Before the cops came rushing in, I was hanging around the %room%.",
+            "I heard a scream when it happened. I was in the %room% at the time. It was terrible.",
+            "Like I already said, I was in the %room%, just down the hall before you all arrived.",
+            "I wasn't there when it happened. Not even close. I was in the %room%.",
+            "The cops pulled me out of the %room% when they arrived. That's where I was when the killer did their thing."
+        ],
+        NooneElse: [
+            "I was all alone in there, I didn't see anyone else.",
+            "I was only in there for a moment, though. I don't think I saw anyone else in there.",
+            "That room was empty, though. I didn't see anyone, at least.",
+            "Pretty sure that room was completely empty, other than me."
+        ],
+        SawSomeone: [
+            "I saw another person in there, %name%.",
+            "Oh! There was someone else in there with me, it was %name%.",
+            "You can ask %name% if you don't believe me, he was in there with me.",
+            "I saw %name% in that same room. Go talk to him, he'll back me up.",
+            "But %name% already told you that, I suppose. He was in there with me.",
+            "If you ask %name%, he'll verify that I was there.",
+            "I saw %name% in there. I don't think they did it, I don't see how they would have the time.",
+            "At least I can safely say that %name% didn't do it. They were in there with me.",
+            "I saw someone else in there, but I honestly don't remember who it was."
+        ]
     },
 
     busyTalking: false,
+
+    getRandomText: function (arr) {
+        var idx = chance.integer({
+            min: 0,
+            max: (arr.length - 1)
+        });
+
+        return arr[idx];
+    },
+
+    wasTalkedTo: false,
 
     interact: function (player) {
         var onComplete = function () {
@@ -55,8 +117,49 @@ var Guest = Entity.extend({
             return;
         }
 
+        if (this.wasTalkedTo) {
+            this.doBasicDialogue(player, [
+                { text: this.getRandomText(this.Texts.DoneTalking), name: this.getDisplayName() }
+            ], onComplete);
+
+            return;
+        }
+
+        Story.interrogatedFolks = true;
+        this.wasTalkedTo = true;
+
+        var lying = this.isWitness || this.isMurderer;
+        var allegedRoom = this.room;
+
+        if (lying) {
+            while (allegedRoom == null || allegedRoom == Story.murderRoom) {
+                allegedRoom = Rooms.selectRandomRoom();
+            }
+        }
+
+        var personPage = null;
+
+        if (lying || allegedRoom.occupants.length == 1) {
+            personPage = this.getRandomText(this.Texts.NooneElse);
+        } else {
+            var randomPerson = null;
+
+            // Select a random person that isn't us
+            do {
+                randomPerson = this.room.occupants[chance.integer({
+                    min: 0,
+                    max: this.room.occupants.length - 1
+                })];
+            }
+            while (randomPerson == this);
+
+            personPage = this.getRandomText(this.Texts.SawSomeone).replace('%name%', randomPerson.getDisplayName());
+        }
+
         this.doBasicDialogue(player, [
-            { text: 'I was in the ' + this.room.name + '. There were ' + (this.room.occupants.length - 1) + ' other guest(s) with me. Thank you.', name: this.getDisplayName() }
+            { text: this.getRandomText(this.Texts.Intro), name: this.getDisplayName() },
+            { text: this.getRandomText(this.Texts.WhereIWas).replace('%room%', allegedRoom.name) },
+            { text: personPage }
         ], onComplete);
     },
 
