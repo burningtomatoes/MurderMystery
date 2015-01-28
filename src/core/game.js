@@ -81,7 +81,7 @@ var Game = {
 
             Camera.onMapLoaded();
 
-            $('#location').text(this.map.properties.name);
+            $('#location').text(this.map.data.properties.name);
         }.bind(this);
 
         var execLoad = function() {
