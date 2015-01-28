@@ -6,6 +6,8 @@ var scrWalkIn = Script.extend({
     introCop: null,
 
     run: function () {
+        $('#hud').hide();
+
         this.introCop = new Officer();
         this.introCop.posX = 492;
         this.introCop.posY = 850;
@@ -50,6 +52,7 @@ var scrWalkIn = Script.extend({
             this.map.player.canControl = true;
             this.walkingIn = false;
             this.introCop.posY = 348;
+            $('#hud').show();
         }
 
         Sfx.play('door_closing.wav');
@@ -71,6 +74,8 @@ var scrWalkIn = Script.extend({
                 this.map.player.canControl = true;
 
                 this.copWalking = true;
+
+                $('#hud').show();
             }.bind(this);
 
             Dialogue.prepare([

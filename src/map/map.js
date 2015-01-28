@@ -114,6 +114,9 @@ var Map = Class.extend({
 
         // Prepare tile animations
         this.prepareTidAnimations();
+
+        // Update HUD
+        $('#location').text(this.data.properties.name);
     },
 
     configurePlayerSpawn: function (playerEntity) {
